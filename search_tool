@@ -1,0 +1,37 @@
+import subprocess
+import webbrowser
+import sys
+import time
+import urllib.parse
+
+filter_sites = ["reddit.com", "geeksforgeeks.org", "quora.com", "wikipedia.org"]
+
+
+def build_search_url(query):
+    query_terms = urllib.parse.quote(query)
+    site_filter = " OR ".join([f"site:{site}" for site in filter_sites])
+    search_url = f"https://www.google.com/search?q={query_terms} ({site_filter})"
+    return search_url
+
+
+def search_terminal():
+    print("Type 's <search query>' to search popular educational websites.")
+    while True:
+        user_input = input(">> ").strip()
+
+        if user_input.lower().startswith('s '):
+            search_query = user_input[2:].strip()
+            if search_query:
+                search_url = build_search_url(search_query)
+                print(f"Searching for: {search_query} on popular educational websites...")
+                webbrowser.open(search_url)
+            else:
+                print("Please enter a search term after 's'")
+        elif user_input.lower() in ['exit', 'quit']:
+            print("Exiting the search tool.")
+            break
+        else:
+            print("Invalid input. Use 's <search query>' to perform a search.")
+
+
+search_terminal()
